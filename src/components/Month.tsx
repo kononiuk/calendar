@@ -81,7 +81,7 @@ const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays }) => 
       </div>
       <div style={gridStyle}>
         {allDays.map((day, index) => (
-          <div key={index} style={{ backgroundColor: day.isCurrentMonth ? '#e3e4e6' : '#ebebeb', minWidth: 0 }}>
+          <div key={index} style={{ backgroundColor: day.isCurrentMonth ? '#e3e4e6' : '#ebebeb', minWidth: 0, overflowY: 'auto' }}>
             <Day key={index + 7} day={ day } />
           </div>
         ))}

@@ -17,11 +17,9 @@ interface DayProps {
 
 const Day: React.FC<DayProps> = ({ day }) => {
   const holidays = useContext(HolidayContext);
-  const { tasks, addTask } = useContext(TasksContext);
+  const { tasks, addTask, editTask, removeTask } = useContext(TasksContext);
 
   const dayTasks = tasks.filter(task => task.date.getTime() === day.date.getTime());
-
-  console.log(tasks);
 
   const dateOptions: Intl.DateTimeFormatOptions = (day.isCurrentMonth && (day.isLast || day.isFirst)) || (!day.isCurrentMonth && (day.isFirst || day.isLast))
   ? { month: 'short', day: 'numeric' }
@@ -70,6 +68,20 @@ const Day: React.FC<DayProps> = ({ day }) => {
     maxWidth: '100%',
   };
 
+  const taskCardStyle: React.CSSProperties = {
+    backgroundColor: '#d3d3d3',
+    padding: '2px 4px',
+    margin: '4px 0 0 0',
+    borderRadius: '4px',
+    boxShadow: '0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0px rgba(0,0,0,0.14), 0 1px 3px 0px rgba(0,0,0,0.12)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    fontSize: '12px',
+    minHeight: '18px',
+    boxSizing: 'border-box',
+  };
+
   return (
     <div style={dayStyles}>
       <div style={{ minHeight: '18px' }}>
@@ -104,10 +116,25 @@ const Day: React.FC<DayProps> = ({ day }) => {
         }
       </div>
 
-      {dayTasks.map(task => (
-        <div key={task.id} style={{ backgroundColor: '#e3e4e6', padding: '4px', margin: '4px 0', borderRadius: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {task.name}
-        </div>
+      {dayTasks && dayTasks.length > 0 && dayTasks.map(task => (
+        <Popup
+          trigger={
+            <div key={task.id} style={taskCardStyle}>
+              {task.name}
+            </div>
+          }
+          content={
+            <TaskForm
+              initialName={task.name}
+              onSave={(taskName: string) => {
+                editTask(task.id, taskName);
+              }}
+              onDelete={() => {
+                removeTask(task.id);
+              }}
+            />
+          }
+        />
       ))}
 
       <div style={{ height: '100%' }}>
@@ -119,7 +146,6 @@ const Day: React.FC<DayProps> = ({ day }) => {
             const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
             const newTaskId = lastTaskId + 1;
             addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: [] });
-            
           }} />}
         />
       </div>

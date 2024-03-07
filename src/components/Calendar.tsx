@@ -61,7 +61,7 @@ const Calendar: React.FC = () => {
     textAlign: 'center',
     textDecoration: 'none',
     display: 'inline-block',
-    fontSize: '16px',
+    fontSize: '14px',
     margin: '0 4px',
     cursor: 'pointer',
     borderRadius: '4px',

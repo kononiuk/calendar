@@ -60,7 +60,10 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
   };
 
   const closeButtonStyle: React.CSSProperties = {
-    backgroundColor: '#e3e4e6',
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    backgroundColor: 'transparent',
     color: 'black',
     border: 'none',
     padding: '5px 10px',
@@ -68,11 +71,8 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
     textDecoration: 'none',
     display: 'inline-block',
     fontSize: '16px',
-    marginTop: '8px',
     cursor: 'pointer',
-    borderRadius: '4px',
     transitionDuration: '0.4s',
-    boxShadow: '0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)',
     outline: 'none'
   };
 
@@ -84,7 +84,7 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
       {isOpen && (
         <div style={popupStyle}>
           {content}
-          <button style={closeButtonStyle} onClick={() => setIsOpen(false)}>Close</button>
+          <button style={closeButtonStyle} onClick={() => setIsOpen(false)}>X</button>
         </div>
       )}
     </div>
