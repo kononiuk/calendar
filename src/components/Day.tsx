@@ -70,6 +70,7 @@ const Day: React.FC<DayProps> = ({ day }) => {
 
   const taskCardStyle: React.CSSProperties = {
     backgroundColor: '#d3d3d3',
+    cursor: 'pointer',
     padding: '2px 4px',
     margin: '4px 0 0 0',
     borderRadius: '4px',
@@ -81,6 +82,17 @@ const Day: React.FC<DayProps> = ({ day }) => {
     minHeight: '18px',
     boxSizing: 'border-box',
   };
+
+  const tasksQuantityCard: React.CSSProperties = {
+    backgroundColor: '#ebe9e9',
+    cursor: 'pointer',
+    padding: '2px 4px',
+    margin: '4px 0 0 0',
+    borderRadius: '4px',
+    fontSize: '12px',
+    minHeight: '18px',
+    boxSizing: 'border-box',
+  }
 
   return (
     <div style={dayStyles}>
@@ -116,26 +128,60 @@ const Day: React.FC<DayProps> = ({ day }) => {
         }
       </div>
 
-      {dayTasks && dayTasks.length > 0 && dayTasks.map(task => (
+      {dayTasks && dayTasks.length > 0 && (
         <Popup
           trigger={
-            <div key={task.id} style={taskCardStyle}>
-              {task.name}
+            <div key={dayTasks[0].id} style={taskCardStyle}>
+              {dayTasks[0].name}
             </div>
           }
           content={
             <TaskForm
-              initialName={task.name}
+              initialName={dayTasks[0].name}
               onSave={(taskName: string) => {
-                editTask(task.id, taskName);
+                editTask(dayTasks[0].id, taskName);
               }}
               onDelete={() => {
-                removeTask(task.id);
+                removeTask(dayTasks[0].id);
               }}
             />
           }
         />
-      ))}
+      )}
+
+      {dayTasks && dayTasks.length > 0 && (
+        <Popup
+          trigger={
+            <div style={tasksQuantityCard}>+{dayTasks.length-1}</div>
+          }
+          content={
+            <div>
+              {dayTasks.map(task => (
+                <div key={task.id} style={taskCardStyle}>
+                  <Popup
+                    trigger={
+                      <div key={task.id}>
+                        {task.name}
+                      </div>
+                    }
+                    content={
+                      <TaskForm
+                        initialName={task.name}
+                        onSave={(taskName: string) => {
+                          editTask(task.id, taskName);
+                        }}
+                        onDelete={() => {
+                          removeTask(task.id);
+                        }}
+                      />
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          }
+        />
+      )}
 
       <div style={{ height: '100%' }}>
         <Popup 

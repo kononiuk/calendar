@@ -45,7 +45,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '' 
     borderRadius: '4px',
     transitionDuration: '0.4s',
     boxShadow: '0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)',
-    outline: 'none'
+    outline: 'none',
+    flexBasis: '100%',
   };
 
   return (
@@ -58,8 +59,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '' 
         required
         style={inputStyle}
       />
-      <button type="submit" style={buttonStyle}>Save</button>
-      <button type="button" onClick={onDelete} style={buttonStyle}>Delete</button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
+        <button type="submit" style={buttonStyle}>Save</button>
+        {initialName && <button type="button" onClick={onDelete} style={{ ...buttonStyle, backgroundColor: '#efefef' }}>Delete</button>}
+      </div>
     </form>
   );
 };

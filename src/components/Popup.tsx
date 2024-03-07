@@ -51,7 +51,7 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
     bottom: position.bottom,
     left: position.left,
     backgroundColor: '#fff',
-    padding: '16px',
+    padding: '16px 36px 16px 16px',
     borderRadius: '4px',
     maxWidth: '450px',
     minWidth: '300px',
