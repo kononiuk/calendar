@@ -6,6 +6,7 @@ const Calendar: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState<Date[]>([]);
   const [nextMonth, setNextMonth] = useState<Date[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const year = currentDate.getFullYear();
@@ -70,15 +71,33 @@ const Calendar: React.FC = () => {
     outline: 'none'
   };
 
+  const searchInputStyle: React.CSSProperties = {
+    margin: '0 0 0 auto',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '4px',
+    border: 'none',
+    borderBottom: '1px solid #000',
+    outline: 'none',
+    width: '300px',
+  };
+
   return (
     <div style={mainStyle}>
       <header style={headerStyle}>
         <button style={buttonStyle} onClick={handlePrevMonth}>Previous</button>
         <button style={buttonStyle} onClick={handleToday}>Today</button>
         <button style={buttonStyle} onClick={handleNextMonth}>Next</button>
+        <input
+          type="text"
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+          placeholder="Search tasks"
+          style={searchInputStyle}
+        />
         <h1 style={{ display: 'inline-block', fontSize: 24, margin: '0 0 0 auto', color: 'black' }}>{currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}</h1>
       </header>
-      <Month days={currentMonth} prevMonthDays={prevMonth} nextMonthDays={nextMonth} />
+      <Month days={currentMonth} prevMonthDays={prevMonth} nextMonthDays={nextMonth} searchText={searchText} />
     </div>
   );
 };

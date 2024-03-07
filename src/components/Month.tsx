@@ -13,9 +13,10 @@ interface MonthProps {
   days: Date[];
   prevMonthDays?: Date[];
   nextMonthDays?: Date[];
+  searchText?: string;
 }
 
-const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays }) => {
+const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays, searchText }) => {
   const headerStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns: 'repeat(7, 1fr)',
@@ -82,7 +83,7 @@ const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays }) => 
       <div style={gridStyle}>
         {allDays.map((day, index) => (
           <div key={index} style={{ backgroundColor: day.isCurrentMonth ? '#e3e4e6' : '#ebebeb', minWidth: 0, overflowY: 'auto' }}>
-            <Day key={index + 7} day={ day } />
+            <Day key={index + 7} day={day} searchText={searchText || ''} />
           </div>
         ))}
       </div>

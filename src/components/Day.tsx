@@ -13,13 +13,16 @@ interface DayProps {
     isLast: boolean;
     isFirst: boolean;
   };
+  searchText: string;
 }
 
-const Day: React.FC<DayProps> = ({ day }) => {
+const Day: React.FC<DayProps> = ({ day, searchText }) => {
   const holidays = useContext(HolidayContext);
   const { tasks, addTask, editTask, removeTask } = useContext(TasksContext);
 
-  const dayTasks = tasks.filter(task => task.date.getTime() === day.date.getTime());
+  const dayTasks = tasks
+    .filter(task => task.date.getTime() === day.date.getTime())
+    .filter(task => task.name.toLowerCase().includes(searchText.toLowerCase()));
 
   const dateOptions: Intl.DateTimeFormatOptions = (day.isCurrentMonth && (day.isLast || day.isFirst)) || (!day.isCurrentMonth && (day.isFirst || day.isLast))
   ? { month: 'short', day: 'numeric' }
@@ -149,7 +152,7 @@ const Day: React.FC<DayProps> = ({ day }) => {
         />
       )}
 
-      {dayTasks && dayTasks.length > 0 && (
+      {dayTasks && dayTasks.length > 1 && (
         <Popup
           trigger={
             <div style={tasksQuantityCard}>+{dayTasks.length-1}</div>
