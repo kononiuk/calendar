@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import HolidayContext from '../contexts/HolidayContext';
 import TasksContext from '../contexts/TasksContext';
-import Popup from './Popup';
+import Popup from '../utils/Popup';
 import Holidays from './Holidays';
-import TaskForm from './TaskForm';
+import TaskForm from '../utils/TaskForm';
 
 interface DayProps {
   day: {

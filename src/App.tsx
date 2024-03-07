@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Calendar from './components/Calendar';
-import Loader from './components/Loader';
+import Loader from './utils/Loader';
 import HolidayContext from './contexts/HolidayContext';
 import TasksProvider from './contexts/TasksProvider';
 import './App.css';
