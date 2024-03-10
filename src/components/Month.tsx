@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import Day from './Day';
 
 interface DayData {
@@ -16,26 +17,49 @@ interface MonthProps {
   searchText?: string;
 }
 
+interface DayContainerProps {
+  $isCurrentMonth: boolean;
+}
+
+const MonthWrap = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+`;
+
+const MonthHeader = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: stretch;
+  justify-content: space-around;
+`;
+
+const MonthHeaderDay = styled.div`
+  background-color: #eeeff1;
+  padding: 4px;
+`;
+
+const Grid = styled.div`
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 4px;
+  align-items: stretch;
+  justify-content: space-around;
+  height: 100%;
+  margin-top: 4px;
+`;
+
+const DayContainer = styled.div<DayContainerProps>`
+  background-color: ${(props) => (props.$isCurrentMonth ? '#e3e4e6' : '#ebebeb')};
+  min-width: 0;
+  overflow-y: auto;
+`;
+
 const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays, searchText }) => {
-  const headerStyle: React.CSSProperties = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-  };
-
-  const gridStyle: React.CSSProperties = {
-    flexGrow: 1,
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gridAutoRows: '1fr',
-    gap: '4px',
-    alignItems: 'stretch',
-    justifyContent: 'space-around',
-    height: '100%',
-    marginTop: '4px',
-  };
-
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   const today = new Date();
@@ -72,22 +96,22 @@ const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays, searc
   ];
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-      <div style={headerStyle}>
+    <MonthWrap>
+      <MonthHeader>
         {daysOfWeek.map((dayName, index) => (
-          <div key={index} style={{ backgroundColor: '#eeeff1', padding: '4px' }}>
+          <MonthHeaderDay key={index}>
             {dayName}
-          </div>
+          </MonthHeaderDay>
         ))}
-      </div>
-      <div style={gridStyle}>
+      </MonthHeader>
+      <Grid>
         {allDays.map((day, index) => (
-          <div key={index} style={{ backgroundColor: day.isCurrentMonth ? '#e3e4e6' : '#ebebeb', minWidth: 0, overflowY: 'auto' }}>
-            <Day key={index + 7} day={day} searchText={searchText || ''} />
-          </div>
+          <DayContainer key={index + 7} $isCurrentMonth={day.isCurrentMonth}>
+            <Day day={day} searchText={searchText || ''} />
+          </DayContainer>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </MonthWrap>
   );
 };
 

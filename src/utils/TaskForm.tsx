@@ -1,10 +1,57 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 interface TaskFormProps {
   onSave: (taskName: string) => void;
   onDelete?: () => void;
   initialName?: string;
 }
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: auto;
+`;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid #000;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+`;
+
+const Button = styled.button`
+  background-color: #e3e4e6;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16);
+  outline: none;
+  flex-basis: 100%;
+  &:hover {
+    background-color: #d3d4d6;
+  }
+`;
+
+const DeleteButton = styled(Button)`
+  background-color: #efefef;
+`;
 
 const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '' }) => {
   const [taskName, setTaskName] = useState(initialName);
@@ -15,55 +62,20 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '' 
     setTaskName('');
   };
 
-  const formStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    maxWidth: '300px',
-    margin: 'auto'
-  };
-
-  const inputStyle: React.CSSProperties = {
-    border: 'none',
-    borderBottom: '1px solid #000',
-    padding: '10px',
-    fontSize: '16px',
-    outline: 'none'
-  };
-
-  const buttonStyle: React.CSSProperties = {
-    backgroundColor: '#e3e4e6',
-    color: 'black',
-    border: 'none',
-    padding: '5px 10px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontSize: '14px',
-    margin: '0 4px',
-    cursor: 'pointer',
-    borderRadius: '4px',
-    transitionDuration: '0.4s',
-    boxShadow: '0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)',
-    outline: 'none',
-    flexBasis: '100%',
-  };
-
   return (
-    <form onSubmit={handleSubmit} style={formStyle}>
-      <input
+    <Form onSubmit={handleSubmit}>
+      <Input
         type="text"
         value={taskName}
         onChange={(event) => setTaskName(event.target.value)}
         placeholder="Task name"
         required
-        style={inputStyle}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
-        <button type="submit" style={buttonStyle}>Save</button>
-        {initialName && <button type="button" onClick={onDelete} style={{ ...buttonStyle, backgroundColor: '#efefef' }}>Delete</button>}
-      </div>
-    </form>
+      <Actions>
+        <Button type="submit">Save</Button>
+        {initialName && <DeleteButton type="button" onClick={onDelete}>Delete</DeleteButton>}
+      </Actions>
+    </Form>
   );
 };
 

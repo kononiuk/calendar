@@ -1,5 +1,70 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import Month from './Month';
+import Sidebar from './Sidebar';
+
+const Main = styled.div`
+  background-color: #eeeff1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px 12px 24px;
+  background-color: #eeeff1;
+`;
+
+const HeaderTitle = styled.h1`
+  display: inline-block;
+  font-size: 24px;
+  margin: 0 0 0 auto;
+  color: black;
+`;
+
+const Button = styled.button`
+  background-color: #e3e4e6;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 0 4px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16);
+  outline: none;
+  &:hover {
+    background-color: #d3d4d6;
+  }
+`;
+
+const LabelsButton = styled(Button)`
+  margin-right: 16px;
+`;
+
+const SearchInput = styled.input`
+  margin: 0 0 0 auto;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  width: 300px;
+`;
+
+const MonthsWrap = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+`;
 
 const Calendar: React.FC = () => {
   const [prevMonth, setPrevMonth] = useState<Date[]>([]);
@@ -39,66 +104,28 @@ const Calendar: React.FC = () => {
     setCurrentDate(new Date());
   };
 
-  const mainStyle: React.CSSProperties = {
-    backgroundColor: '#eeeff1',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-  };
-
-  const headerStyle: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '16px 24px 12px 24px',
-    backgroundColor: '#eeeff1',
-  };
-
-  const buttonStyle: React.CSSProperties = {
-    backgroundColor: '#e3e4e6',
-    color: 'black',
-    border: 'none',
-    padding: '5px 10px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontSize: '14px',
-    margin: '0 4px',
-    cursor: 'pointer',
-    borderRadius: '4px',
-    transitionDuration: '0.4s',
-    boxShadow: '0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)',
-    outline: 'none'
-  };
-
-  const searchInputStyle: React.CSSProperties = {
-    margin: '0 0 0 auto',
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '4px',
-    border: 'none',
-    borderBottom: '1px solid #000',
-    outline: 'none',
-    width: '300px',
-  };
+  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
 
   return (
-    <div style={mainStyle}>
-      <header style={headerStyle}>
-        <button style={buttonStyle} onClick={handlePrevMonth}>Previous</button>
-        <button style={buttonStyle} onClick={handleToday}>Today</button>
-        <button style={buttonStyle} onClick={handleNextMonth}>Next</button>
-        <input
+    <Main>
+      <Header>
+        <LabelsButton onClick={() => setSidebarOpen(!isSidebarOpen)}>Labels</LabelsButton>
+        <Button onClick={handlePrevMonth}>&lt;</Button>
+        <Button onClick={handleToday}>Today</Button>
+        <Button onClick={handleNextMonth}>&gt;</Button>
+        <SearchInput
           type="text"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
           placeholder="Search tasks"
-          style={searchInputStyle}
         />
-        <h1 style={{ display: 'inline-block', fontSize: 24, margin: '0 0 0 auto', color: 'black' }}>{currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}</h1>
-      </header>
-      <Month days={currentMonth} prevMonthDays={prevMonth} nextMonthDays={nextMonth} searchText={searchText} />
-    </div>
+        <HeaderTitle>{currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}</HeaderTitle>
+      </Header>
+      <MonthsWrap>
+        {isSidebarOpen && <Sidebar />}
+        <Month days={currentMonth} prevMonthDays={prevMonth} nextMonthDays={nextMonth} searchText={searchText} />
+      </MonthsWrap>
+    </Main>
   );
 };
 

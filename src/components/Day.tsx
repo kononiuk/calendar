@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 import HolidayContext from '../contexts/HolidayContext';
 import TasksContext from '../contexts/TasksContext';
 import Popup from '../utils/Popup';
@@ -16,6 +17,114 @@ interface DayProps {
   searchText: string;
 }
 
+interface HolidaysTriggerTextProps {
+  $moreThanOne: boolean;
+}
+
+interface TodayTextProps {
+  $isCurrentMonth: boolean;
+}
+
+interface HolidaysBlockProps {
+  $hasHolidays: boolean;
+}
+
+const DayCell = styled.div`
+  padding: 4px 8px;
+  max-width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const TodayWrapper = styled.div`
+  min-height: 18px;
+`;
+
+const Today = styled.span`
+  background-color: green;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  margin-left: auto;
+`;
+
+const HolidaysTrigger = styled.span`
+  align-items: center;
+  background-color: green;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  max-width: 100%;
+  padding: 2px 4px;
+  min-height: 12px;
+`;
+
+const HolidaysTriggerText = styled.span<HolidaysTriggerTextProps>`
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: ${(props) => props.$moreThanOne ? 'calc(100% - 20px)' : '100%'};
+`;
+
+const TaskCard = styled.div`
+  background-color: #d3d3d3;
+  cursor: pointer;
+  padding: 2px 4px;
+  margin: 4px 0 0 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0px rgba(0,0,0,0.14), 0 1px 3px 0px rgba(0,0,0,0.12);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  min-height: 18px;
+  box-sizing: border-box;
+`;
+
+const TaskQuantity = styled.div`
+  background-color: #ebe9e9;
+  cursor: pointer;
+  padding: 2px 4px;
+  margin: 4px 0 0 0;
+  border-radius: 4px;
+  font-size: 12px;
+  min-height: 18px;
+  box-sizing: border-box;
+`;
+
+const TodayTrigger = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const TodayText = styled.span<TodayTextProps>`
+  font-size: 14px;
+  font-weight: ${(props) => props.$isCurrentMonth ? '600' : '400'};
+`;
+
+const HolidaysBlock = styled.div<HolidaysBlockProps>`
+  min-height: ${(props) => props.$hasHolidays ? '18px' : '0'};
+  overflow: hidden;
+`;
+
+const AdditionalHolidaysCount = styled.span`
+  color: #e3e4e6;
+  font-size: 10px;
+`;
+
+const FullHeightContainer = styled.div`
+  height: 100%;
+`;
+
 const Day: React.FC<DayProps> = ({ day, searchText }) => {
   const holidays = useContext(HolidayContext);
   const { tasks, addTask, editTask, removeTask } = useContext(TasksContext);
@@ -30,84 +139,17 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
 
   const matchingHolidays = holidays.filter(holiday => holiday.date === day.date.toISOString().split('T')[0]);
 
-  const dayStyles: React.CSSProperties = {
-    padding: '4px 8px',
-    maxWidth: '100%',
-    boxSizing: 'border-box',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch'
-  };
-
-  const todayStyles: React.CSSProperties = {
-    backgroundColor: 'green',
-    borderRadius: '50%',
-    height: '10px',
-    width: '10px',
-    marginLeft: 'auto',
-  };
-
-  const holidaysStyle: React.CSSProperties = {
-    alignItems: 'center',
-    backgroundColor: 'green',
-    borderRadius: '4px',
-    boxSizing: 'border-box',
-    color: 'white',
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'space-between',
-    fontSize: '12px',
-    maxWidth: '100%',
-    padding: '2px 4px',
-    minHeight: '12px',
-  };
-
-  const holidaysTextStyle: React.CSSProperties = {
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxWidth: '100%',
-  };
-
-  const taskCardStyle: React.CSSProperties = {
-    backgroundColor: '#d3d3d3',
-    cursor: 'pointer',
-    padding: '2px 4px',
-    margin: '4px 0 0 0',
-    borderRadius: '4px',
-    boxShadow: '0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0px rgba(0,0,0,0.14), 0 1px 3px 0px rgba(0,0,0,0.12)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    fontSize: '12px',
-    minHeight: '18px',
-    boxSizing: 'border-box',
-  };
-
-  const tasksQuantityCard: React.CSSProperties = {
-    backgroundColor: '#ebe9e9',
-    cursor: 'pointer',
-    padding: '2px 4px',
-    margin: '4px 0 0 0',
-    borderRadius: '4px',
-    fontSize: '12px',
-    minHeight: '18px',
-    boxSizing: 'border-box',
-  }
-
   return (
-    <div style={dayStyles}>
-      <div style={{ minHeight: '18px' }}>
+    <DayCell>
+      <TodayWrapper>
         <Popup 
           trigger={
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-              <div style={{ fontSize: '14px' ,fontWeight: day.isCurrentMonth ? 600 : 400  }}>
+            <TodayTrigger>
+              <TodayText $isCurrentMonth={day.isCurrentMonth} >
                 {day.date.toLocaleDateString(undefined, dateOptions)}
-              </div>
-              <span style={{ ...todayStyles, display: day.isToday ? 'inline-block' : 'none' }}></span>
-            </div>
+              </TodayText>
+              {day.isToday && <Today/>}
+            </TodayTrigger>
           }
           content={<TaskForm onSave={(taskName: string) => {
             const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
@@ -115,28 +157,30 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
             addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: [] });
           }} />}
         />
-      </div>
+      </TodayWrapper>
 
-      <div style={{ overflow: 'hidden', minHeight: matchingHolidays.length > 0 ? '18px' : 0 }}>
+      <HolidaysBlock $hasHolidays={matchingHolidays.length > 0}>
         {matchingHolidays.length > 0 && 
           <Popup 
             trigger={
-              <span style={holidaysStyle}>
-                <span style={{ ...holidaysTextStyle, maxWidth: matchingHolidays.length > 1 ? 'calc(100% - 26px)' : '100%'  }}>{matchingHolidays[0].name}</span>
-                {matchingHolidays.length > 1 && <span style={{ color: '#e3e4e6', fontSize: '10px' }}>+{matchingHolidays.length - 1}</span>}
-              </span>
+              <HolidaysTrigger>
+                <HolidaysTriggerText $moreThanOne={matchingHolidays.length > 1}>
+                  {matchingHolidays[0].name}
+                </HolidaysTriggerText>
+                {matchingHolidays.length > 1 && <AdditionalHolidaysCount>+{matchingHolidays.length - 1}</AdditionalHolidaysCount>}
+              </HolidaysTrigger>
             }
             content={<Holidays matchingHolidays={matchingHolidays} />}
           />
         }
-      </div>
+      </HolidaysBlock>
 
       {dayTasks && dayTasks.length > 0 && (
         <Popup
           trigger={
-            <div key={dayTasks[0].id} style={taskCardStyle}>
+            <TaskCard key={dayTasks[0].id}>
               {dayTasks[0].name}
-            </div>
+            </TaskCard>
           }
           content={
             <TaskForm
@@ -155,12 +199,12 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
       {dayTasks && dayTasks.length > 1 && (
         <Popup
           trigger={
-            <div style={tasksQuantityCard}>+{dayTasks.length-1}</div>
+            <TaskQuantity>+{dayTasks.length-1}</TaskQuantity>
           }
           content={
             <div>
               {dayTasks.map(task => (
-                <div key={task.id} style={taskCardStyle}>
+                <TaskCard key={task.id}>
                   <Popup
                     trigger={
                       <div key={task.id}>
@@ -179,17 +223,17 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                       />
                     }
                   />
-                </div>
+                </TaskCard>
               ))}
             </div>
           }
         />
       )}
 
-      <div style={{ height: '100%' }}>
+      <FullHeightContainer>
         <Popup 
           trigger={
-            <div style={{ height: '100%' }}></div>
+            <FullHeightContainer/>
           }
           content={<TaskForm onSave={(taskName: string) => {
             const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
@@ -197,8 +241,8 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
             addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: [] });
           }} />}
         />
-      </div>
-    </div>
+      </FullHeightContainer>
+    </DayCell>
   );
 };
 

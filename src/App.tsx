@@ -3,7 +3,7 @@ import Calendar from './components/Calendar';
 import Loader from './utils/Loader';
 import HolidayContext from './contexts/HolidayContext';
 import TasksProvider from './contexts/TasksProvider';
-import './App.css';
+import LabelsProvider from './contexts/LabelsProvider';
 
 interface Holiday {
   date: string;
@@ -35,11 +35,13 @@ function App() {
 
   return (
     <TasksProvider>
-      <HolidayContext.Provider value={holidays}>
-        <div className="App">
-          <Calendar />
-        </div>
-      </HolidayContext.Provider>
+      <LabelsProvider>
+        <HolidayContext.Provider value={holidays}>
+          <div className="App">
+            <Calendar />
+          </div>
+        </HolidayContext.Provider>
+      </LabelsProvider>
     </TasksProvider>
   );
 }

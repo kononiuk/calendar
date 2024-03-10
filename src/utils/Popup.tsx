@@ -1,9 +1,57 @@
 import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
 
 interface PopupProps {
   trigger: JSX.Element;
   content: JSX.Element;
 }
+
+interface Position {
+  top: string;
+  right: string;
+  bottom: string;
+  left: string;
+}
+
+interface PopupStyleProps {
+  $position: Position;
+}
+
+const FullHeightContainer = styled.div`
+  height: 100%;
+`;
+
+const PopupStyle = styled.div<PopupStyleProps>`
+  position: fixed;
+  top: ${(props) => props.$position.top};
+  right: ${(props) => props.$position.right};
+  bottom: ${(props) => props.$position.bottom};
+  left: ${(props) => props.$position.left};
+  background-color: #fff;
+  padding: 16px 36px 16px 16px;
+  border-radius: 4px;
+  max-width: 450px;
+  min-width: 300px;
+  z-index: 1000;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+`;
+
+const CloseButtonStyle = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  outline: none;
+`;
 
 const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,50 +92,18 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
     };
   }, []);
 
-  const popupStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: position.top,
-    right: position.right,
-    bottom: position.bottom,
-    left: position.left,
-    backgroundColor: '#fff',
-    padding: '16px 36px 16px 16px',
-    borderRadius: '4px',
-    maxWidth: '450px',
-    minWidth: '300px',
-    zIndex: 1000,
-    boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
-  };
-
-  const closeButtonStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    backgroundColor: 'transparent',
-    color: 'black',
-    border: 'none',
-    padding: '5px 10px',
-    textAlign: 'center',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontSize: '16px',
-    cursor: 'pointer',
-    transitionDuration: '0.4s',
-    outline: 'none'
-  };
-
   return (
-    <div ref={ref} style={{ height: '100%' }} >
-      <div onClick={handleClickTrigger} style={{ height: '100%' }} >
+    <FullHeightContainer ref={ref}>
+      <FullHeightContainer onClick={handleClickTrigger} >
         {trigger}
-      </div>
+      </FullHeightContainer>
       {isOpen && (
-        <div style={popupStyle}>
+        <PopupStyle $position={position}>
           {content}
-          <button style={closeButtonStyle} onClick={() => setIsOpen(false)}>X</button>
-        </div>
+          <CloseButtonStyle onClick={() => setIsOpen(false)}>X</CloseButtonStyle>
+        </PopupStyle>
       )}
-    </div>
+    </FullHeightContainer>
   );
 };
 
