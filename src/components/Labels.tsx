@@ -65,9 +65,13 @@ const LabelForm = () => {
   const [labelName, setLabelName] = useState('');
   const [color, setColor] = useState('#008000');
 
+  const generateId = () => {
+    return Date.now().toString();
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    addLabel({ id: '', name: labelName, color });
+    addLabel({ id: generateId(), name: labelName, color });
     setLabelName('');
     setColor('#008000');
   };

@@ -10,7 +10,7 @@ export interface Task {
 interface TasksContextProps {
   tasks: Task[];
   addTask: (task: Task) => void;
-  editTask: (taskId: string, taskName: string) => void;
+  editTask: (taskId: string, taskName: string, selectedLabels: string[]) => void;
   removeTask: (taskId: string) => void;
 }
 

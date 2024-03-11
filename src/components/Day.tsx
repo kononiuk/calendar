@@ -151,10 +151,10 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
               {day.isToday && <Today/>}
             </TodayTrigger>
           }
-          content={<TaskForm onSave={(taskName: string) => {
+          content={<TaskForm onSave={(taskName: string, taskLabels: string[]) => {
             const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
             const newTaskId = lastTaskId + 1;
-            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: [] });
+            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
           }} />}
         />
       </TodayWrapper>
@@ -185,8 +185,9 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
           content={
             <TaskForm
               initialName={dayTasks[0].name}
-              onSave={(taskName: string) => {
-                editTask(dayTasks[0].id, taskName);
+              initialLabels={dayTasks[0].labels}
+              onSave={(taskName: string, selectedLabels: string[]) => {
+                editTask(dayTasks[0].id, taskName, selectedLabels);
               }}
               onDelete={() => {
                 removeTask(dayTasks[0].id);
@@ -214,8 +215,9 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                     content={
                       <TaskForm
                         initialName={task.name}
-                        onSave={(taskName: string) => {
-                          editTask(task.id, taskName);
+                        initialLabels={dayTasks[0].labels}
+                        onSave={(taskName: string, selectedLabels: string[]) => {
+                          editTask(dayTasks[0].id, taskName, selectedLabels);
                         }}
                         onDelete={() => {
                           removeTask(task.id);
@@ -235,10 +237,10 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
           trigger={
             <FullHeightContainer/>
           }
-          content={<TaskForm onSave={(taskName: string) => {
+          content={<TaskForm onSave={(taskName: string, taskLabels: string[]) => {
             const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
             const newTaskId = lastTaskId + 1;
-            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: [] });
+            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
           }} />}
         />
       </FullHeightContainer>
