@@ -80,7 +80,7 @@ const HolidaysTriggerText = styled.span<HolidaysTriggerTextProps>`
 `;
 
 const TaskCard = styled.div`
-  background-color: #d3d3d3;
+  background-color: #ffffff;
   cursor: pointer;
   padding: 2px 4px;
   margin: 4px 0 0 0;
@@ -172,8 +172,28 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
 
   const matchingHolidays = holidays.filter(holiday => holiday.date === day.date.toISOString().split('T')[0]);
 
+  const handleDragStart = (event: React.DragEvent, taskId: string) => {
+    event.dataTransfer.setData('text/plain', taskId);
+  };
+  
+  const handleDragEnd = (event: React.DragEvent) => {
+    event.dataTransfer.clearData();
+  };
+  
+  const handleDrop = (event: React.DragEvent, targetDate: Date) => {
+    const taskId = event.dataTransfer.getData('text/plain');
+    const task = tasks.find((task) => task.id === taskId);
+  
+    if (task) {
+      editTask(taskId, task.name, targetDate, task.labels);
+    }
+  };
+
   return (
-    <DayCell>
+    <DayCell
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => handleDrop(event, day.date)}
+    >
       <TodayWrapper>
         <Popup 
           trigger={
@@ -184,11 +204,17 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
               {day.isToday && <Today/>}
             </TodayTrigger>
           }
-          content={<TaskForm onSave={(taskName: string, taskLabels: string[]) => {
-            const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
-            const newTaskId = lastTaskId + 1;
-            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
-          }} />}
+          content={(closePopup) => (
+            <TaskForm
+              onSave={(taskName: string, taskLabels: string[]) => {
+                const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
+                const newTaskId = lastTaskId + 1;
+                addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
+                closePopup();
+              }}
+              closePopup={closePopup}
+            />
+          )}
         />
       </TodayWrapper>
 
@@ -211,8 +237,11 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
       {dayTasks && dayTasks.length > 0 && (
         <Popup
           trigger={
-            <TaskCard key={dayTasks[0].id}>
-              {dayTasks[0].name}
+            <TaskCard 
+              key={dayTasks[0].id}
+              draggable
+              onDragStart={(event) => handleDragStart(event, dayTasks[0].id)}
+              onDragEnd={handleDragEnd}>
               <DayLabelList>
                 {dayTasks[0].labels.map((labelId: string, index: number) => {
                   const label = labels.find((label) => label.id === labelId);
@@ -223,20 +252,24 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                   );
                 })}
               </DayLabelList>
+              {dayTasks[0].name}
             </TaskCard>
           }
-          content={
+          content={(closePopup) => (
             <TaskForm
               initialName={dayTasks[0].name}
               initialLabels={dayTasks[0].labels}
               onSave={(taskName: string, selectedLabels: string[]) => {
-                editTask(dayTasks[0].id, taskName, selectedLabels);
+                editTask(dayTasks[0].id, taskName, dayTasks[0].date, selectedLabels);
+                closePopup();
               }}
               onDelete={() => {
                 removeTask(dayTasks[0].id);
+                closePopup();
               }}
+              closePopup={closePopup}
             />
-          }
+          )}
         />
       )}
 
@@ -265,18 +298,21 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                         </DayLabelList>
                       </div>
                     }
-                    content={
+                    content={(closePopup) => (
                       <TaskForm
                         initialName={task.name}
-                        initialLabels={dayTasks[0].labels}
+                        initialLabels={task.labels}
                         onSave={(taskName: string, selectedLabels: string[]) => {
-                          editTask(dayTasks[0].id, taskName, selectedLabels);
+                          editTask(task.id, taskName, task.date, selectedLabels);
+                          closePopup();
                         }}
                         onDelete={() => {
                           removeTask(task.id);
+                          closePopup();
                         }}
+                        closePopup={closePopup}
                       />
-                    }
+                    )}
                   />
                 </TaskCard>
               ))}
@@ -290,11 +326,18 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
           trigger={
             <FullHeightContainer/>
           }
-          content={<TaskForm onSave={(taskName: string, taskLabels: string[]) => {
-            const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
-            const newTaskId = lastTaskId + 1;
-            addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
-          }} />}
+          content={(closePopup) => (
+            <TaskForm 
+              onSave={(taskName: string, taskLabels: string[]) => {
+                const lastTaskId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
+                const newTaskId = lastTaskId + 1;
+                addTask({ id: newTaskId.toString(), name: taskName, date: day.date, labels: taskLabels || [] });
+                closePopup();
+              }}
+              closePopup={closePopup} 
+            />
+          )}
+          style={{height: '100%'}}
         />
       </FullHeightContainer>
     </DayCell>

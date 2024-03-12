@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface PopupProps {
   trigger: JSX.Element;
-  content: JSX.Element;
+  content: JSX.Element | ((closePopup: () => void) => ReactNode);
+  style?: React.CSSProperties;
 }
 
 interface Position {
@@ -53,7 +54,7 @@ const CloseButtonStyle = styled.button`
   outline: none;
 `;
 
-const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
+const Popup: React.FC<PopupProps> = ({ trigger, content, style }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 'auto', right: 'auto', bottom: 'auto', left: 'auto' });
   const ref = useRef<HTMLDivElement | null>(null);
@@ -85,6 +86,10 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
     setPosition(popupPosition);
   };
 
+  const closePopup = () => {
+    setIsOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -93,17 +98,17 @@ const Popup: React.FC<PopupProps> = ({ trigger, content }) => {
   }, []);
 
   return (
-    <FullHeightContainer ref={ref}>
+    <div style={style} ref={ref}>
       <FullHeightContainer onClick={handleClickTrigger} >
         {trigger}
       </FullHeightContainer>
       {isOpen && (
         <PopupStyle $position={position}>
-          {content}
+          {typeof content === 'function' ? content(closePopup) : content}
           <CloseButtonStyle onClick={() => setIsOpen(false)}>X</CloseButtonStyle>
         </PopupStyle>
       )}
-    </FullHeightContainer>
+    </div>
   );
 };
 

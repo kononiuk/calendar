@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Month from './Month';
 import Sidebar from '../utils/Sidebar';
 import Labels from '../components/labels/Labels';
-import IO from '../components/data-io/ExportImport';
+import IO from '../utils/ExportImport';
 
 const Main = styled.div`
   background-color: #eeeff1;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import LabelsContext from '../../contexts/LabelsContext';
-import TasksContext, { Task } from '../../contexts/TasksContext';
+import LabelsContext from '../contexts/LabelsContext';
+import TasksContext, { Task } from '../contexts/TasksContext';
 
 const Wrapper = styled.div`
   display: flex;

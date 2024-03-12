@@ -3,8 +3,9 @@ import LabelContext from '../contexts/LabelsContext';
 import styled from 'styled-components';
 
 interface TaskFormProps {
-  onSave: (taskName: string, selectedLabels: string[]) => void;
+  onSave: (taskName: string, taskLabels: string[], closePopup: () => void) => void;
   onDelete?: () => void;
+  closePopup: () => void;
   initialName?: string;
   initialLabels?: string[];
 }
@@ -74,7 +75,7 @@ const LabelButton = styled.button<LabelButtonProps>`
   }
 `;
 
-const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '', initialLabels = [] }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, closePopup, initialName = '', initialLabels = [] }) => {
   const [taskName, setTaskName] = useState(initialName);
   const [selectedLabels, setSelectedLabels] = useState<string[]>(initialLabels);
 
@@ -91,7 +92,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, initialName = '',
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onSave(taskName, selectedLabels);
+    onSave(taskName, selectedLabels, closePopup);
     setTaskName('');
     setSelectedLabels([]);
   };
