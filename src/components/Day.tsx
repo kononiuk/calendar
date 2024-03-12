@@ -185,7 +185,9 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
     const task = tasks.find((task) => task.id === taskId);
   
     if (task) {
-      editTask(taskId, task.name, targetDate, task.labels);
+      if (task.date.getTime() !== targetDate.getTime()) {
+        editTask(taskId, task.name, targetDate, task.labels);
+      }
     }
   };
 
@@ -234,16 +236,16 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
         }
       </HolidaysBlock>
 
-      {dayTasks && dayTasks.length > 0 && (
+      {dayTasks && dayTasks.length > 0 && dayTasks.slice(0, 2).map((task, index) => (
         <Popup
+          key={index}
           trigger={
             <TaskCard 
-              key={dayTasks[0].id}
               draggable
-              onDragStart={(event) => handleDragStart(event, dayTasks[0].id)}
+              onDragStart={(event) => handleDragStart(event, task.id)}
               onDragEnd={handleDragEnd}>
               <DayLabelList>
-                {dayTasks[0].labels.map((labelId: string, index: number) => {
+                {task.labels.map((labelId: string, index: number) => {
                   const label = labels.find((label) => label.id === labelId);
                   return (
                     label && (
@@ -252,46 +254,42 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                   );
                 })}
               </DayLabelList>
-              {dayTasks[0].name}
+              {task.name}
             </TaskCard>
           }
           content={(closePopup) => (
             <TaskForm
-              initialName={dayTasks[0].name}
-              initialLabels={dayTasks[0].labels}
+              initialName={task.name}
+              initialLabels={task.labels}
               onSave={(taskName: string, selectedLabels: string[]) => {
-                editTask(dayTasks[0].id, taskName, dayTasks[0].date, selectedLabels);
-                closePopup();
-              }}
-              onDelete={() => {
-                removeTask(dayTasks[0].id);
+                editTask(task.id, taskName, task.date, selectedLabels);
                 closePopup();
               }}
               closePopup={closePopup}
             />
           )}
         />
-      )}
+      ))}
 
-      {dayTasks && dayTasks.length > 1 && (
+      {dayTasks && dayTasks.length > 2 && (
         <Popup
           trigger={
-            <TaskQuantity>+{dayTasks.length-1}</TaskQuantity>
+            <TaskQuantity>+{dayTasks.length-2}</TaskQuantity>
           }
           content={
             <div>
-              {dayTasks.map(task => (
+              {dayTasks.map((task) => (
                 <TaskCard key={task.id}>
                   <Popup
                     trigger={
                       <div key={task.id}>
                         {task.name}
                         <DayLabelList>
-                          {task.labels.map((labelId: string, index: number) => {
+                          {task.labels.map((labelId) => {
                             const label = labels.find((label) => label.id === labelId);
                             return (
                               label && (
-                                <DayLabel key={index} $labelColor={label.color}></DayLabel>
+                                <DayLabel key={labelId} $labelColor={label.color}></DayLabel>
                               )
                             );
                           })}

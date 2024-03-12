@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import LabelContext from '../contexts/LabelsContext';
 import styled from 'styled-components';
 
@@ -78,8 +78,15 @@ const LabelButton = styled.button<LabelButtonProps>`
 const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, closePopup, initialName = '', initialLabels = [] }) => {
   const [taskName, setTaskName] = useState(initialName);
   const [selectedLabels, setSelectedLabels] = useState<string[]>(initialLabels);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { labels } = useContext(LabelContext);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const toggleLabel = (labelId: string, event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -100,6 +107,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSave, onDelete, closePopup, initi
   return (
     <Form onSubmit={handleSubmit}>
       <Input
+        ref={inputRef}
         type="text"
         value={taskName}
         onChange={(event) => setTaskName(event.target.value)}
