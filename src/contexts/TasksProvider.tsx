@@ -21,7 +21,7 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
   };
 
   return (
-    <TasksContext.Provider value={{ tasks, addTask, editTask, removeTask }}>
+    <TasksContext.Provider value={{ tasks, addTask, editTask, removeTask, setTasks }}>
       {children}
     </TasksContext.Provider>
   );

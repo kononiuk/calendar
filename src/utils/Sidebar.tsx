@@ -1,8 +1,7 @@
 import React from 'react';
-import Labels from '../components/labels/Labels';
 import styled from 'styled-components';
 
-const Sidebar = styled.div`
+const SidebarContainer = styled.div`
   min-width: 300px;
   padding: 30px 16px 16px 16px;
   overflow-y: auto;
@@ -12,13 +11,13 @@ const SidebarTitle = styled.h3`
   font-weight: 600;
 `;
 
-const LabelsForm = () => {
+const Sidebar = ({ title, children }: { title: string, children: React.ReactNode }) => {
   return (
-    <Sidebar>
-      <SidebarTitle>Labels</SidebarTitle>
-      <Labels />
-    </Sidebar>
+    <SidebarContainer>
+      <SidebarTitle>{title}</SidebarTitle>
+      {children}
+    </SidebarContainer>
   );
 };
 
-export default LabelsForm;
+export default Sidebar;

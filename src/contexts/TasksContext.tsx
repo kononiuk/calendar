@@ -12,6 +12,7 @@ interface TasksContextProps {
   addTask: (task: Task) => void;
   editTask: (taskId: string, taskName: string, selectedLabels: string[]) => void;
   removeTask: (taskId: string) => void;
+  setTasks: (labels: Task[]) => void;
 }
 
 const TasksContext = React.createContext<TasksContextProps>({
@@ -19,6 +20,7 @@ const TasksContext = React.createContext<TasksContextProps>({
   addTask: () => {},
   editTask: () => {},
   removeTask: () => {},
+  setTasks: () => {},
 });
 
 export default TasksContext;

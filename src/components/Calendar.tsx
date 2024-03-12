@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Month from './Month';
 import Sidebar from '../utils/Sidebar';
+import Labels from '../components/labels/Labels';
+import IO from '../components/data-io/ExportImport';
 
 const Main = styled.div`
   background-color: #eeeff1;
@@ -14,14 +16,14 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px 12px 24px;
+  padding: 12px 24px 12px 24px;
   background-color: #eeeff1;
 `;
 
 const HeaderTitle = styled.h1`
   display: inline-block;
   font-size: 24px;
-  margin: 0 0 0 auto;
+  margin: 0 0 0 32px;
   color: black;
 `;
 
@@ -45,12 +47,12 @@ const Button = styled.button`
   }
 `;
 
-const LabelsButton = styled(Button)`
+const FuncButton = styled(Button)`
   margin-right: 16px;
 `;
 
 const SearchInput = styled.input`
-  margin: 0 0 0 auto;
+  margin: 0 auto;
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
@@ -104,25 +106,35 @@ const Calendar: React.FC = () => {
     setCurrentDate(new Date());
   };
 
-  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
+  const [activeSidebarComponent, setActiveSidebarComponent] = useState('');
 
   return (
     <Main>
       <Header>
-        <LabelsButton onClick={() => setSidebarOpen(!isSidebarOpen)}>Labels</LabelsButton>
-        <Button onClick={handlePrevMonth}>&lt;</Button>
-        <Button onClick={handleToday}>Today</Button>
-        <Button onClick={handleNextMonth}>&gt;</Button>
+      <FuncButton onClick={() => { setActiveSidebarComponent(activeSidebarComponent !== 'Labels' ? 'Labels' : ''); }}>Labels</FuncButton>
+      <FuncButton onClick={() => { setActiveSidebarComponent(activeSidebarComponent !== 'IO' ? 'IO' : ''); }}>Export/Import</FuncButton>
         <SearchInput
           type="text"
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
           placeholder="Search tasks"
         />
+        <Button onClick={handlePrevMonth}>&lt;</Button>
+        <Button onClick={handleToday}>Today</Button>
+        <Button onClick={handleNextMonth}>&gt;</Button>
         <HeaderTitle>{currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric' })}</HeaderTitle>
       </Header>
       <MonthsWrap>
-        {isSidebarOpen && <Sidebar />}
+        {activeSidebarComponent === 'Labels' && 
+          <Sidebar title="Labels">
+            <Labels />
+          </Sidebar>
+        }
+        {activeSidebarComponent === 'IO' && 
+          <Sidebar title="Export/Import">
+            <IO />
+          </Sidebar>
+        }
         <Month days={currentMonth} prevMonthDays={prevMonth} nextMonthDays={nextMonth} searchText={searchText} />
       </MonthsWrap>
     </Main>

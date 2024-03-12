@@ -12,6 +12,7 @@ interface LabelsContextProps {
   addLabel: (label: Label) => void;
   editLabel: (labelId: string, labelName: string, labelColor: string, isFiltered: boolean) => void;
   removeLabel: (labelId: string) => void;
+  setLabels: (labels: Label[]) => void;
 }
 
 const LabelsContext = React.createContext<LabelsContextProps>({
@@ -19,6 +20,7 @@ const LabelsContext = React.createContext<LabelsContextProps>({
   addLabel: () => {},
   editLabel: () => {},
   removeLabel: () => {},
+  setLabels: () => {},
 });
 
 export default LabelsContext;

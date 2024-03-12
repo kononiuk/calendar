@@ -25,7 +25,7 @@ const LabelsProvider: React.FC<LabelsProviderProps> = ({ children }) => {
   };
 
   return (
-    <LabelsContext.Provider value={{ labels, addLabel, editLabel, removeLabel }}>
+    <LabelsContext.Provider value={{ labels, addLabel, editLabel, removeLabel, setLabels }}>
       {children}
     </LabelsContext.Provider>
   );
