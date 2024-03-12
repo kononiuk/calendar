@@ -12,8 +12,12 @@ const LabelsProvider: React.FC<LabelsProviderProps> = ({ children }) => {
     setLabels((prevLabels) => [...prevLabels, label]);
   };
 
-  const editLabel = (labelId: string, labelName: string, labelColor: string) => {
-    setLabels((prevLabels) => prevLabels.map((label) => label.id === labelId ? { ...label, name: labelName, color: labelColor  } : label));
+  const editLabel = (labelId: string, labelName: string, labelColor: string, isFiltered: boolean) => {
+    setLabels((prevLabels) =>
+      prevLabels.map((label) =>
+        label.id === labelId ? { ...label, name: labelName, color: labelColor, isFiltered: isFiltered } : label
+      )
+    );
   };
 
   const removeLabel = (labelId: string) => {

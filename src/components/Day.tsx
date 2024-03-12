@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import HolidayContext from '../contexts/HolidayContext';
 import TasksContext from '../contexts/TasksContext';
+import LabelsContext from '../contexts/LabelsContext';
 import Popup from '../utils/Popup';
 import Holidays from './Holidays';
 import TaskForm from '../utils/TaskForm';
@@ -27,6 +28,10 @@ interface TodayTextProps {
 
 interface HolidaysBlockProps {
   $hasHolidays: boolean;
+}
+
+interface DayLabelProps {
+  $labelColor: string;
 }
 
 const DayCell = styled.div`
@@ -125,13 +130,41 @@ const FullHeightContainer = styled.div`
   height: 100%;
 `;
 
+const DayLabelList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const DayLabel = styled.li<DayLabelProps>`
+  background-color: ${(props) => props.$labelColor};
+  border-radius: 5px;
+  height: 10px;
+  padding: 0;
+  margin: 0;
+  flex-basis: 30px;
+`;
+
 const Day: React.FC<DayProps> = ({ day, searchText }) => {
   const holidays = useContext(HolidayContext);
   const { tasks, addTask, editTask, removeTask } = useContext(TasksContext);
+  const { labels } = useContext(LabelsContext);
+  const filteredLabels = labels.filter(label => label.isFiltered);
 
-  const dayTasks = tasks
-    .filter(task => task.date.getTime() === day.date.getTime())
-    .filter(task => task.name.toLowerCase().includes(searchText.toLowerCase()));
+  let dayTasks = tasks
+  .filter(task => task.date.getTime() === day.date.getTime())
+  .filter(task => task.name.toLowerCase().includes(searchText.toLowerCase()));
+
+  if (filteredLabels.length > 0) {
+    dayTasks = dayTasks.filter(task => 
+      task.labels.some(labelId => 
+        filteredLabels.some(filteredLabel => filteredLabel.id === labelId)
+      )
+    );
+  }
 
   const dateOptions: Intl.DateTimeFormatOptions = (day.isCurrentMonth && (day.isLast || day.isFirst)) || (!day.isCurrentMonth && (day.isFirst || day.isLast))
   ? { month: 'short', day: 'numeric' }
@@ -180,6 +213,16 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
           trigger={
             <TaskCard key={dayTasks[0].id}>
               {dayTasks[0].name}
+              <DayLabelList>
+                {dayTasks[0].labels.map((labelId: string, index: number) => {
+                  const label = labels.find((label) => label.id === labelId);
+                  return (
+                    label && (
+                      <DayLabel key={index} $labelColor={label.color}></DayLabel>
+                    )
+                  );
+                })}
+              </DayLabelList>
             </TaskCard>
           }
           content={
@@ -210,6 +253,16 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                     trigger={
                       <div key={task.id}>
                         {task.name}
+                        <DayLabelList>
+                          {task.labels.map((labelId: string, index: number) => {
+                            const label = labels.find((label) => label.id === labelId);
+                            return (
+                              label && (
+                                <DayLabel key={index} $labelColor={label.color}></DayLabel>
+                              )
+                            );
+                          })}
+                        </DayLabelList>
                       </div>
                     }
                     content={

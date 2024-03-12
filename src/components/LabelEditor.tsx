@@ -7,6 +7,10 @@ interface LabelEditorProps {
   removeLabel: (id: string) => void;
 }
 
+const Form = styled.form`
+  flex-grow: 1;
+`;
+
 const InputsWrapper = styled.div`
   display: flex;
   gap: 10px;
@@ -73,7 +77,7 @@ const LabelEditor: React.FC<LabelEditorProps> = ({ label, updateLabel, removeLab
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <InputsWrapper>
         <Input
           type="text"
@@ -90,7 +94,7 @@ const LabelEditor: React.FC<LabelEditorProps> = ({ label, updateLabel, removeLab
         <Button type="submit">Update</Button>
         <DeleteButton type="button" onClick={handleRemove}>Remove</DeleteButton>
       </Actions>
-    </form>
+    </Form>
   );
 };
 

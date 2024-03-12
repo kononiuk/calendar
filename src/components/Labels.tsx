@@ -57,7 +57,37 @@ const LabelsList = styled.ul`
 `;
 
 const Label = styled.li`
+  align-items: center;
+  display: flex;
+  gap: 8px;
   margin-top: 16px;
+`;
+
+const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #000000;
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+
+  &:checked {
+    background-color: #000000;
+  }
+
+  &:checked::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    top: 0;
+    left: 4px;
+    transform: rotate(45deg);
+  }
 `;
 
 const LabelForm = () => {
@@ -71,9 +101,16 @@ const LabelForm = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    addLabel({ id: generateId(), name: labelName, color });
+    addLabel({ id: generateId(), name: labelName, color, isFiltered: false });
     setLabelName('');
     setColor('#008000');
+  };
+
+  const toggleFilterLabel = (labelId: string) => {
+    const label = labels.find((label) => label.id === labelId);
+    if (label) {
+      editLabel(label.id, label.name, label.color, !label.isFiltered);
+    }
   };
 
   return (
@@ -81,7 +118,15 @@ const LabelForm = () => {
       <LabelsList>
         {labels.map((label) => (
           <Label key={label.id}>
-            <LabelEditor label={label} updateLabel={editLabel} removeLabel={removeLabel} />
+            <StyledCheckbox
+              checked={label.isFiltered}
+              onChange={() => toggleFilterLabel(label.id)}
+            />
+            <LabelEditor
+              label={label}
+              updateLabel={(name: string, color: string) => editLabel(label.id, name, color, label.isFiltered)}
+              removeLabel={removeLabel}
+            />
           </Label>
         ))}
       </LabelsList>
@@ -92,6 +137,7 @@ const LabelForm = () => {
             placeholder="Label name"
             value={labelName}
             onChange={(e) => setLabelName(e.target.value)}
+            required
           />
           <ColorInput
             type="color"
