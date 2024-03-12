@@ -1,5 +1,5 @@
 import React from 'react';
-import Labels from './Labels';
+import Labels from '../components/labels/Labels';
 import styled from 'styled-components';
 
 const Sidebar = styled.div`

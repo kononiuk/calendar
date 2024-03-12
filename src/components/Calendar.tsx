@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Month from './Month';
-import Sidebar from './Sidebar';
+import Sidebar from '../utils/Sidebar';
 
 const Main = styled.div`
   background-color: #eeeff1;

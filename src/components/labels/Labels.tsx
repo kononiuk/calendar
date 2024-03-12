@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import LabelContext from '../contexts/LabelsContext';
+import LabelContext from '../../contexts/LabelsContext';
 import LabelEditor from './LabelEditor';
 
 const Form = styled.form`
