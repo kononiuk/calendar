@@ -12,8 +12,12 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
     setTasks((prevTasks) => [...prevTasks, task]);
   };
 
-  const editTask = (taskId: string, taskName: string, selectedLabels: string[]) => {
-    setTasks((prevTasks) => prevTasks.map((task) => task.id === taskId ? { ...task, name: taskName, labels: selectedLabels } : task));
+  const editTask = (taskId: string, taskName: string, date: Date, selectedLabels: string[]) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, name: taskName, date: date, labels: selectedLabels } : task
+      )
+    );
   };
 
   const removeTask = (taskId: string) => {

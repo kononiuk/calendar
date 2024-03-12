@@ -172,8 +172,28 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
 
   const matchingHolidays = holidays.filter(holiday => holiday.date === day.date.toISOString().split('T')[0]);
 
+  const handleDragStart = (event: React.DragEvent, taskId: string) => {
+    event.dataTransfer.setData('text/plain', taskId);
+  };
+  
+  const handleDragEnd = (event: React.DragEvent) => {
+    event.dataTransfer.clearData();
+  };
+  
+  const handleDrop = (event: React.DragEvent, targetDate: Date) => {
+    const taskId = event.dataTransfer.getData('text/plain');
+    const task = tasks.find((task) => task.id === taskId);
+  
+    if (task) {
+      editTask(taskId, task.name, targetDate, task.labels);
+    }
+  };
+
   return (
-    <DayCell>
+    <DayCell
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => handleDrop(event, day.date)}
+    >
       <TodayWrapper>
         <Popup 
           trigger={
@@ -211,7 +231,11 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
       {dayTasks && dayTasks.length > 0 && (
         <Popup
           trigger={
-            <TaskCard key={dayTasks[0].id}>
+            <TaskCard 
+              key={dayTasks[0].id}
+              draggable
+              onDragStart={(event) => handleDragStart(event, dayTasks[0].id)}
+              onDragEnd={handleDragEnd}>
               {dayTasks[0].name}
               <DayLabelList>
                 {dayTasks[0].labels.map((labelId: string, index: number) => {
@@ -230,7 +254,7 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
               initialName={dayTasks[0].name}
               initialLabels={dayTasks[0].labels}
               onSave={(taskName: string, selectedLabels: string[]) => {
-                editTask(dayTasks[0].id, taskName, selectedLabels);
+                editTask(dayTasks[0].id, taskName, dayTasks[0].date, selectedLabels);
               }}
               onDelete={() => {
                 removeTask(dayTasks[0].id);
@@ -268,9 +292,9 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                     content={
                       <TaskForm
                         initialName={task.name}
-                        initialLabels={dayTasks[0].labels}
+                        initialLabels={task.labels}
                         onSave={(taskName: string, selectedLabels: string[]) => {
-                          editTask(dayTasks[0].id, taskName, selectedLabels);
+                          editTask(task.id, taskName, task.date, selectedLabels);
                         }}
                         onDelete={() => {
                           removeTask(task.id);
