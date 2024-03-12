@@ -1,46 +1,33 @@
-# Getting Started with Create React App
+# Project Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a dynamic and interactive calendar application built with React.js and TypeScript. The calendar displays a view of a month, with each cell representing a day. Users can create, edit, and delete tasks for each day, with the ability to add multiple tasks per day.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Task Management**: Each cell in the calendar allows for the creation of new tasks. Tasks can be edited and deleted as needed.
+- **Labels**: Users can create, edit, and delete labels. These labels can be attached to any task, providing a way to categorize and organize tasks.
+- **Drag-n-Drop**: Tasks can be moved between days using a drag-n-drop interface, providing a flexible way to reschedule tasks.
+- **Filtering**: Tasks can be filtered by entering a search text and selecting labels, allowing users to quickly find the tasks they're interested in.
+- **Import/Export**: The application supports exporting to JSON and importing from JSON for tasks and labels, providing a way to backup and restore data.
+- **International Holidays**: The calendar automatically adds international holidays for the next 7 days.
 
-### `npm start`
+## Technology
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The project is written entirely in React.js and TypeScript, providing a robust and type-safe application structure. The only third-party library used is `styled-components` for styling, keeping the project dependencies to a minimum and ensuring a lightweight application.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+To get started with this project, clone the repository and install the dependencies with your package manager of choice. Then, start the development server and open the application in your browser.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone git@github.com:kononiuk/calendar.git
+cd calendar
+npm install
+npm start
+```
 
-### `npm run build`
+## Contributing
+Contributions are welcome! Please read the contributing guidelines before making any changes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details. 
