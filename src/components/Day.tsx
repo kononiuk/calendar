@@ -194,6 +194,10 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
       onDragOver={(event) => event.preventDefault()}
       onDrop={(event) => handleDrop(event, day.date)}
     >
+    <DayCell
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => handleDrop(event, day.date)}
+    >
       <TodayWrapper>
         <Popup 
           trigger={
@@ -301,6 +305,7 @@ const Day: React.FC<DayProps> = ({ day, searchText }) => {
                     content={(closePopup) => (
                       <TaskForm
                         initialName={task.name}
+                        initialLabels={task.labels}
                         initialLabels={task.labels}
                         onSave={(taskName: string, selectedLabels: string[]) => {
                           editTask(task.id, taskName, task.date, selectedLabels);
