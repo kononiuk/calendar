@@ -5,6 +5,9 @@ import Sidebar from '../utils/Sidebar';
 import Labels from '../components/labels/Labels';
 import IO from '../utils/ExportImport';
 
+/**
+ * Styled component for the main container.
+ */
 const Main = styled.div`
   background-color: #eeeff1;
   display: flex;
@@ -12,6 +15,9 @@ const Main = styled.div`
   height: 100vh;
 `;
 
+/**
+ * Styled component for the header.
+ */
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -20,6 +26,9 @@ const Header = styled.header`
   background-color: #eeeff1;
 `;
 
+/**
+ * Styled component for the header title.
+ */
 const HeaderTitle = styled.h1`
   display: inline-block;
   font-size: 24px;
@@ -27,6 +36,9 @@ const HeaderTitle = styled.h1`
   color: black;
 `;
 
+/**
+ * Styled component for the button.
+ */
 const Button = styled.button`
   background-color: #e3e4e6;
   color: black;
@@ -47,10 +59,16 @@ const Button = styled.button`
   }
 `;
 
+/**
+ * Styled component for the functional button.
+ */
 const FuncButton = styled(Button)`
   margin-right: 16px;
 `;
 
+/**
+ * Styled component for the search input.
+ */
 const SearchInput = styled.input`
   margin: 0 auto;
   padding: 10px;
@@ -62,12 +80,18 @@ const SearchInput = styled.input`
   width: 300px;
 `;
 
+/**
+ * Styled component for the months wrapper.
+ */
 const MonthsWrap = styled.div`
   display: flex;
   align-items: stretch;
   height: 100%;
 `;
 
+/**
+ * A calendar component.
+ */
 const Calendar: React.FC = () => {
   const [prevMonth, setPrevMonth] = useState<Date[]>([]);
   const [currentMonth, setCurrentMonth] = useState<Date[]>([]);
@@ -75,6 +99,9 @@ const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [searchText, setSearchText] = useState('');
 
+  /**
+   * Effect hook to generate the current, previous, and next months.
+   */
   useEffect(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -84,6 +111,13 @@ const Calendar: React.FC = () => {
     setNextMonth(generateMonth(year, month + 1));
   }, [currentDate]);
 
+  /**
+   * Generates a month.
+   *
+   * @param {number} year - The year of the month.
+   * @param {number} month - The month.
+   * @returns {Date[]} The dates of the month.
+   */
   const generateMonth = (year: number, month: number): Date[] => {
     const result = [];
     const date = new Date(year, month, 1);
@@ -94,14 +128,23 @@ const Calendar: React.FC = () => {
     return result;
   };
 
+  /**
+   * Handles the previous month button click.
+   */
   const handlePrevMonth = () => {
     setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1));
   };
 
+  /**
+   * Handles the next month button click.
+   */
   const handleNextMonth = () => {
     setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1));
   };
 
+  /**
+   * Handles the today button click.
+   */
   const handleToday = () => {
     setCurrentDate(new Date());
   };

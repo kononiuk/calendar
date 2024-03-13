@@ -3,17 +3,26 @@ import styled from 'styled-components';
 import LabelContext from '../../contexts/LabelsContext';
 import LabelEditor from './LabelEditor';
 
+/**
+ * Styled component for the form.
+ */
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
+/**
+ * Styled component for the inputs wrapper.
+ */
 const InputsWrapper = styled.div`
   display: flex;
   gap: 10px;
 `;
 
+/**
+ * Styled component for the input.
+ */
 const Input = styled.input`
   box-sizing: border-box;
   border: none;
@@ -24,12 +33,18 @@ const Input = styled.input`
   padding: 10px;
 `;
 
+/**
+ * Styled component for the color input, which is a special type of input.
+ */
 const ColorInput = styled(Input)`
   padding: 2px 4px;
   flex-grow: 0;
   min-width: 50px;
 `;
 
+/**
+ * Styled component for the button.
+ */
 const Button = styled.button`
   background-color: #e3e4e6;
   color: black;
@@ -50,12 +65,18 @@ const Button = styled.button`
   }
 `;
 
+/**
+ * Styled component for the labels list.
+ */
 const LabelsList = styled.ul`
   list-style: none;
   margin-top: 0;
   padding: 0;
 `;
 
+/**
+ * Styled component for the label.
+ */
 const Label = styled.li`
   align-items: center;
   display: flex;
@@ -63,6 +84,9 @@ const Label = styled.li`
   margin-top: 16px;
 `;
 
+/**
+ * Styled component for the checkbox.
+ */
 const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
   appearance: none;
   width: 18px;
@@ -90,15 +114,26 @@ const StyledCheckbox = styled.input.attrs({ type: 'checkbox' })`
   }
 `;
 
+/**
+ * A form for creating and managing labels.
+ */
 const LabelForm = () => {
   const { labels, addLabel, editLabel, removeLabel } = useContext(LabelContext);
   const [labelName, setLabelName] = useState('');
   const [color, setColor] = useState('#008000');
 
+  /**
+   * Generates a unique ID for a new label.
+   */
   const generateId = () => {
     return Date.now().toString();
   };
 
+  /**
+   * Handles the form submission.
+   *
+   * @param {React.FormEvent} event - The form event.
+   */
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     addLabel({ id: generateId(), name: labelName, color, isFiltered: false });
@@ -106,6 +141,11 @@ const LabelForm = () => {
     setColor('#008000');
   };
 
+  /**
+   * Toggles the filter status of a label.
+   *
+   * @param {string} labelId - The ID of the label.
+   */
   const toggleFilterLabel = (labelId: string) => {
     const label = labels.find((label) => label.id === labelId);
     if (label) {

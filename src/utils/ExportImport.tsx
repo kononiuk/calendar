@@ -3,11 +3,17 @@ import styled from 'styled-components';
 import LabelsContext from '../contexts/LabelsContext';
 import TasksContext, { Task } from '../contexts/TasksContext';
 
+/**
+ * Wrapper is a styled-component div with display set to flex and flex-direction set to column.
+ */
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
+/**
+ * Button is a styled-component button with various styles applied.
+ */
 const Button = styled.button`
   background-color: #e3e4e6;
   color: black;
@@ -28,18 +34,30 @@ const Button = styled.button`
   }
 `;
 
+/**
+ * Import is a styled-component input with display set to none.
+ */
 const Import = styled.input`
   display: none;
 `;
 
+/**
+ * ImportButton is a styled-component button that extends the styles from Button and adds a top margin.
+ */
 const ImportButton = styled(Button)`
   margin-top: 10px;
 `;
 
+/**
+ * ExportToJson is a functional component that provides the functionality to export tasks and labels to a JSON file and import them from a JSON file.
+ */
 const ExportToJson = () => {
   const { labels, setLabels } = useContext(LabelsContext);
   const { tasks, setTasks } = useContext(TasksContext);
 
+  /**
+   * handleExport is a function that exports the current tasks and labels to a JSON file.
+   */
   const handleExport = () => {
     const data = {
       labels,
@@ -55,6 +73,11 @@ const ExportToJson = () => {
     downloadAnchorNode.remove();
   }
 
+  /**
+   * handleFileUpload is a function that handles the upload of a JSON file and imports tasks and labels from it.
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The event object
+   */
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];

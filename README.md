@@ -15,6 +15,10 @@ This project is a dynamic and interactive calendar application built with React.
 
 The project is written entirely in React.js and TypeScript, providing a robust and type-safe application structure. The only third-party library used is `styled-components` for styling, keeping the project dependencies to a minimum and ensuring a lightweight application.
 
+## Demo
+
+You can view a live demo of the project here: [https://kononiuk.github.io/calendar/](https://kononiuk.github.io/calendar/)
+
 ## Getting Started
 
 To get started with this project, clone the repository and install the dependencies with your package manager of choice. Then, start the development server and open the application in your browser.

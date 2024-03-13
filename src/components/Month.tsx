@@ -2,6 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import Day from './Day';
 
+/**
+ * Interface for DayData
+ * @interface
+ * @property {Date} date - The date of the day
+ * @property {boolean} isToday - Whether the day is today
+ * @property {boolean} isCurrentMonth - Whether the day is in the current month
+ * @property {boolean} isLast - Whether the day is the last day in its month
+ * @property {boolean} isFirst - Whether the day is the first day in its month
+ */
 interface DayData {
   date: Date;
   isToday: boolean;
@@ -10,6 +19,14 @@ interface DayData {
   isFirst: boolean;
 }
 
+/**
+ * Interface for MonthProps
+ * @interface
+ * @property {Date[]} days - The days in the month
+ * @property {Date[]} prevMonthDays - The days in the previous month
+ * @property {Date[]} nextMonthDays - The days in the next month
+ * @property {string} searchText - The text to search for
+ */
 interface MonthProps {
   days: Date[];
   prevMonthDays?: Date[];
@@ -17,10 +34,18 @@ interface MonthProps {
   searchText?: string;
 }
 
+/**
+ * Interface for DayContainerProps
+ * @interface
+ * @property {boolean} $isCurrentMonth - Whether the day is in the current month
+ */
 interface DayContainerProps {
   $isCurrentMonth: boolean;
 }
 
+/**
+ * MonthWrap is a styled component that wraps the entire month.
+ */
 const MonthWrap = styled.div`
   height: 100%;
   display: flex;
@@ -29,6 +54,9 @@ const MonthWrap = styled.div`
   flex-grow: 1;
 `;
 
+/**
+ * MonthHeader is a styled component that represents the header of the month.
+ */
 const MonthHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -36,11 +64,17 @@ const MonthHeader = styled.div`
   justify-content: space-around;
 `;
 
+/**
+ * MonthHeaderDay is a styled component that represents a day in the month header.
+ */
 const MonthHeaderDay = styled.div`
   background-color: #eeeff1;
   padding: 4px;
 `;
 
+/**
+ * Grid is a styled component that represents the grid of days in the month.
+ */
 const Grid = styled.div`
   flex-grow: 1;
   display: grid;
@@ -53,12 +87,21 @@ const Grid = styled.div`
   margin-top: 4px;
 `;
 
+/**
+ * DayContainer is a styled component that represents a container for a day.
+ * @property {boolean} $isCurrentMonth - Whether the day is in the current month
+ */
 const DayContainer = styled.div<DayContainerProps>`
   background-color: ${(props) => (props.$isCurrentMonth ? '#e3e4e6' : '#ebebeb')};
   min-width: 0;
   overflow-y: auto;
 `;
 
+/**
+ * Month component displays a calendar month with days.
+ * 
+ * @param {MonthProps} props - The properties that define the month and its days.
+ */
 const Month: React.FC<MonthProps> = ({ days, prevMonthDays, nextMonthDays, searchText }) => {
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
